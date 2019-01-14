@@ -1,0 +1,61 @@
+#include <iostream>
+using namespace std;
+
+int main(){
+	bool refill, mortefuel, mortecrash, mortehit, gameover;
+	mortehit= false;
+	mortecrash= false;
+	refill = false;
+	mortefuel = false;
+	gameover = false;
+	int vite, fuel, intervallo, aggiuntafuel;
+	fuel = 8;  //Carburante totale
+	vite = 3;
+	intervallo = 0;
+	while (!gameover) {
+	while (vite > 0) {
+    while ((!mortefuel) && (!mortecrash) && (!mortehit))  {
+		if (!refill) {    // Se il carburante non è stato preso...
+			if (intervallo % 3 == 0) {   //Continua con l'intervallo di tempo per la perdita di carburante
+				fuel--;                  // si perde carburante ogni 3 "passi"
+				if (fuel == 0) {        // se il carburante arriva a 0 significa che la nave è senza benzina e quindi "distrutta"
+							mortefuel = true;
+							}
+						intervallo ++;    //altrimenti aumento l'intervallo per il passo successivo
+					}
+			}else{
+		intervallo = 0; //se ottengo la benzina, resetto lo stato della benzina nella nave e quindi anche il timer di perdita benzina
+		if (fuel + aggiuntafuel > 8){
+			fuel = 8;
+			intervallo = 0;
+			refill = false;
+		}else{
+		fuel = fuel + aggiuntafuel;
+		intervallo = 0;
+		refill = false;  //resetto il refill per attivare il processo di perdita di benzina
+	 	 }
+    }
+    if (mortefuel) {          //se morte = true, significa che si perde una vita
+		vite --;
+		mortefuel = false;
+		intervallo = 0;   //la morte comporterà il reset della navicella allo stato iniziale, e ricomincia la partita
+		fuel = 8;
+    	}else if (mortecrash){
+    		vite --;
+    		mortecrash = false;
+    		intervallo = 0;   //la morte comporterà il reset della navicella allo stato iniziale, e ricomincia la partita
+    	    fuel = 8;
+    	}else if (mortehit){
+    		vite --;
+    		mortehit = false;
+    		intervallo = 0;   //la morte comporterà il reset della navicella allo stato iniziale, e ricomincia la partita
+    		fuel = 8;
+    	}
+	}
+	if ( vite == 0){
+		gameover = true;
+		}
+	}
+	return 0;
+}
+
